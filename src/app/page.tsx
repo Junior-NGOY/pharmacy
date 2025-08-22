@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, Shield, MapPin, Phone, Mail, ArrowRight, Star, Clock, DollarSign, CheckCircle, User, Quote } from 'lucide-react';
+import { Search, Shield, MapPin, Phone, Mail, ArrowRight, Star, Clock, DollarSign, CheckCircle, User, Quote, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -10,6 +10,7 @@ import Link from 'next/link';
 
 export default function HomePage() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -69,6 +70,8 @@ export default function HomePage() {
               </div>
               <span className="text-xl font-bold text-gray-900">PharmaRDC</span>
             </div>
+            
+            {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-6">
               <a href="#recherche" className="text-gray-600 hover:text-emerald-600 transition-colors">
                 Recherche
@@ -86,7 +89,58 @@ export default function HomePage() {
                 <Button variant="outline" size="sm">Connexion</Button>
               </Link>
             </nav>
+            
+            {/* Mobile Menu Button */}
+            <div className="md:hidden flex items-center space-x-2">
+              <Link href="/login">
+                <Button variant="outline" size="sm">Connexion</Button>
+              </Link>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-label="Toggle menu"
+              >
+                {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </Button>
+            </div>
           </div>
+          
+          {/* Mobile Navigation */}
+          {isMenuOpen && (
+            <div className="md:hidden mt-4 py-4 border-t">
+              <nav className="flex flex-col space-y-4">
+                <a 
+                  href="#recherche" 
+                  className="text-gray-600 hover:text-emerald-600 transition-colors py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Recherche
+                </a>
+                <a 
+                  href="#pharmacies" 
+                  className="text-gray-600 hover:text-emerald-600 transition-colors py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Pharmacies
+                </a>
+                <Link 
+                  href="/tarifs" 
+                  className="text-gray-600 hover:text-emerald-600 transition-colors py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Tarifs
+                </Link>
+                <a 
+                  href="#contact" 
+                  className="text-gray-600 hover:text-emerald-600 transition-colors py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Contact
+                </a>
+              </nav>
+            </div>
+          )}
         </div>
       </header>
 
